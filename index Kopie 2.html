@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>DANUS</title>
+
+<style>
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 600vh;
+  background: #f4eddf;
+  font-family: "Courier New", monospace;
+  overflow-x: hidden;
+}
+
+/* 🧻 Rolle */
+#container {
+  position: fixed;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#roll {
+  width: 60%;
+  max-width: 600px;
+  position: absolute;
+  transition: opacity 0.6s ease;
+}
+
+/* 📄 Papier-Textblock */
+#paper {
+  position: fixed;
+  bottom: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 55%;
+  max-width: 520px;
+
+  color: #2f2f2f;
+  font-family: "Courier New", monospace;
+
+  line-height: 1.5;
+  text-align: left;
+
+  background: rgba(255,255,255,0.25);
+  padding: 20px;
+  border-radius: 2px;
+}
+
+/* Typo */
+#title {
+  font-size: 18px;
+  letter-spacing: 2px;
+  margin-bottom: 10px;
+}
+
+#text {
+  font-size: 14px;
+  margin-bottom: 10px;
+  white-space: pre-line; /* 🧠 wichtig für manuelle Zeilenumbrüche */
+}
+
+#link a {
+  color: #2f2f2f;
+  text-decoration: underline;
+  font-size: 14px;
+}
+
+/* Smooth fade helper */
+.fade {
+  opacity: 0;
+}
+</style>
+</head>
+
+<body>
+
+<div id="container">
+  <img id="roll" src="1.png">
+</div>
+
+<div id="paper">
+  <div id="title"></div>
+  <div id="text"></div>
+  <div id="link"></div>
+</div>
+
+<script>
+const images = ["1.png","2.png","3.png","4.png","5.png"];
+
+const states = [
+  {
+    title: "WELCOME TO DANUS",
+    text: "A physical media system\nfor positive information.",
+    link: ""
+  },
+  {
+    title: "EARTH DISPATCH #001",
+    text: "Global renewable energy\nreached new highs.",
+    link: ""
+  },
+  {
+    title: "SCIENCE UPDATE",
+    text: "AI systems improve\nearly disease detection.",
+    link: ""
+  },
+  {
+    title: "FICTION LAYER",
+    text: "Elrond reports\nfrom Earth systems.",
+    link: ""
+  },
+  {
+    title: "JOIN DANUS",
+    text: "Eine neue Kategorie:\nPositive Nachrichten auf hygienischem Tissue",
+    link: "https://docs.google.com/presentation/"
+  }
+];
+
+let current = -1;
+
+const roll = document.getElementById("roll");
+const title = document.getElementById("title");
+const text = document.getElementById("text");
+const link = document.getElementById("link");
+
+function update(i) {
+
+  // 🧻 smooth image fade
+  roll.style.opacity = 0;
+
+  setTimeout(() => {
+    roll.src = images[i];
+    roll.style.opacity = 1;
+  }, 300);
+
+  // 📄 text update
+  title.innerText = states[i].title;
+  text.innerText = states[i].text;
+
+  if (states[i].link) {
+    link.innerHTML = `<a href="${states[i].link}" target="_blank">View Presentation</a>`;
+  } else {
+    link.innerHTML = "";
+  }
+}
+
+window.addEventListener("scroll", () => {
+
+  let scrollY = window.scrollY;
+  let maxScroll = document.body.scrollHeight - window.innerHeight;
+  let progress = scrollY / maxScroll;
+
+  let index;
+
+  // Phase 1: 1–5
+  if (progress < 0.8) {
+    index = Math.floor(progress / 0.8 * 5);
+    if (index > 4) index = 4;
+  }
+
+  // Phase 2: loop 4–5
+  else {
+    let loopProgress = (progress - 0.8) / 0.2;
+    index = loopProgress < 0.5 ? 3 : 4;
+  }
+
+  if (index !== current) {
+    current = index;
+    update(current);
+  }
+});
+</script>
+
+</body>
+</html>

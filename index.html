@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>DANUS</title>
+
+<style>
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 500vh; /* wichtig für scroll */
+  background: #f4eddf; /* creme */
+  font-family: "Courier New", monospace;
+  overflow-x: hidden;
+}
+
+#container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+img {
+  width: 60%;
+  max-width: 600px;
+  height: auto;
+  transition: opacity 0.3s ease;
+}
+
+#text {
+  position: fixed;
+  bottom: 40px;
+  width: 100%;
+  text-align: center;
+  font-size: 18px;
+  color: #333;
+  letter-spacing: 2px;
+}
+</style>
+</head>
+
+<body>
+
+<div id="container">
+  <img id="roll" src="1.png">
+</div>
+
+<div id="text">
+  WELCOME TO DANUS
+</div>
+
+<!-- GSAP -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+<script>
+const images = [
+  "1.png",
+  "2.png",
+  "3.png",
+  "4.png",
+  "5.png"
+];
+
+const img = document.getElementById("roll");
+
+let currentIndex = 0;
+
+gsap.registerPlugin(ScrollTrigger);
+
+ScrollTrigger.create({
+  trigger: "body",
+  start: "top top",
+  end: "bottom bottom",
+  scrub: true,
+  onUpdate: (self) => {
+
+    let progress = self.progress; // 0 → 1
+    let index = Math.floor(progress * (images.length - 1));
+
+    if (index !== currentIndex) {
+      currentIndex = index;
+      img.src = images[index];
+    }
+  }
+});
+</script>
+
+</body>
+</html>
